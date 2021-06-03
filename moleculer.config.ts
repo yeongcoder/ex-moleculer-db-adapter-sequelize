@@ -1,5 +1,10 @@
 "use strict";
-import {BrokerOptions, Errors, MetricRegistry, ServiceBroker} from "moleculer";
+import {
+	BrokerOptions,
+	Errors,
+	MetricRegistry,
+	ServiceBroker,
+} from "moleculer";
 
 /**
  * Moleculer ServiceBroker configuration file
@@ -44,7 +49,7 @@ const brokerConfig: BrokerOptions = {
 			// Print module names with different colors (like docker-compose for containers)
 			moduleColors: false,
 			// Line formatter. It can be "json", "short", "simple", "full", a `Function` or a template string like "{timestamp} {level} {nodeID}/{mod}: {msg}"
-			formatter: "full",
+			formatter: "simple",
 			// Custom object printer. If not defined, it uses the `util.inspect` method.
 			objectPrinter: null,
 			// Auto-padding the module name in order to messages begin at the same column.
@@ -63,7 +68,7 @@ const brokerConfig: BrokerOptions = {
 
 	// Define a cacher.
 	// More info: https://moleculer.services/docs/0.14/caching.html
-    cacher: null,
+	cacher: null,
 
 	// Define a serializer.
 	// Available values: "JSON", "Avro", "ProtoBuf", "MsgPack", "Notepack", "Thrift".
@@ -181,7 +186,6 @@ const brokerConfig: BrokerOptions = {
 	started: async (broker: ServiceBroker): Promise<void> => {},
 	stopped: async (broker: ServiceBroker): Promise<void> => {},
 	 */
-
 };
 
 export = brokerConfig;
