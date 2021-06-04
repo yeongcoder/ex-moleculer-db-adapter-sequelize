@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow/prefer-arrow-functions */
 "use strict";
 import { Context, Service, ServiceBroker, ServiceSchema } from "moleculer";
 import Sequelize from "sequelize";
@@ -16,24 +17,36 @@ export default class ProductsService extends Service {
 					name: "products",
 					mixins: [this.DbMixin],
 					model: {
-						// name: "products",
-						// define: {
-						// 	name: Sequelize.STRING,
-						// 	quantity: Sequelize.INTEGER,
-						// 	price: Sequelize.INTEGER,
-						// },
-						// options: {
-						// 	// Options from http://docs.sequelizejs.com/manual/tutorial/models-definition.html
-						// },
+						name: "products",
+						define: {
+							name: Sequelize.STRING,
+							quantity: Sequelize.INTEGER,
+							price: Sequelize.INTEGER,
+							createdAt: {
+								type: Sequelize.DATE,
+								defaultValue:
+									Sequelize.literal("CURRENT_TIMESTAMP"),
+							},
+							updatedAt: {
+								type: Sequelize.DATE,
+								defaultValue: Sequelize.literal(
+									"CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
+								),
+							},
+						},
+						options: {
+							// Options from http://docs.sequelizejs.com/manual/tutorial/models-definition.html
+						},
 					},
+
 					settings: {
-						// // Available fields in the responses
-						// fields: ["_id", "name", "quantity", "price"],
-						// // Validator for the `create` & `insert` actions.
-						// entityValidator: {
-						// 	name: "string|min:3",
-						// 	price: "number|positive",
-						// },
+						// Available fields in the responses
+						fields: ["_id", "name", "quantity", "price"],
+						// Validator for the `create` & `insert` actions.
+						entityValidator: {
+							name: "string|min:3",
+							price: "number|positive",
+						},
 					},
 					hooks: {
 						before: {
@@ -159,41 +172,41 @@ export default class ProductsService extends Service {
 						 * It is called in the DB.mixin after the database
 						 * connection establishing & the collection is empty.
 						 */
-						async seedDB() {
-							await this.adapter.insertMany([
-								{
-									name: "Samsung Galaxy S10 Plus",
-									quantity: 10,
-									price: 704,
-								},
-								{
-									name: "iPhone 11 Pro",
-									quantity: 25,
-									price: 999,
-								},
-								{
-									name: "Huawei P30 Pro",
-									quantity: 15,
-									price: 679,
-								},
-							]);
-						},
+						// async seedDB() {
+						// 	await this.adapter.insertMany([
+						// 		{
+						// 			name: "Samsung Galaxy S10 Plus",
+						// 			quantity: 10,
+						// 			price: 704,
+						// 		},
+						// 		{
+						// 			name: "iPhone 11 Pro",
+						// 			quantity: 25,
+						// 			price: 999,
+						// 		},
+						// 		{
+						// 			name: "Huawei P30 Pro",
+						// 			quantity: 15,
+						// 			price: 679,
+						// 		},
+						// 	]);
+						// },
 					},
 					/**
 					 * Loading sample data to the collection.
 					 */
 					async afterConnected() {
-						await this.adapter.db.query(
-							"CREATE TABLE IF NOT EXISTS `products` (" +
-								"`id` INTEGER NOT NULL auto_increment ," +
-								"`name` VARCHAR(255), " +
-								"`quantity` INTEGER, " +
-								"`price` INTEGER, " +
-								"`createdAt` DATETIME DEFAULT CURRENT_TIMESTAMP," +
-								"`updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
-								"PRIMARY KEY (`id`)" +
-								") ENGINE=InnoDB;"
-						);
+						// await this.adapter.db.query(
+						// 	"CREATE TABLE IF NOT EXISTS `products` (" +
+						// 		"`id` INTEGER NOT NULL auto_increment ," +
+						// 		"`name` VARCHAR(255), " +
+						// 		"`quantity` INTEGER, " +
+						// 		"`price` INTEGER, " +
+						// 		"`createdAt` DATETIME DEFAULT CURRENT_TIMESTAMP," +
+						// 		"`updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP," +
+						// 		"PRIMARY KEY (`id`)" +
+						// 		") ENGINE=InnoDB;"
+						// );
 					},
 				},
 				schema

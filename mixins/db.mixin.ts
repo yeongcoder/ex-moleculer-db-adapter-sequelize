@@ -66,37 +66,18 @@ export default class Connection
 	}
 
 	public start() {
-		if (process.env.MARIA_URL) {
-			// Mongo adapter
-			// eslint-disable-next-line @typescript-eslint/no-var-requires
-			const SqlAdapter = require("moleculer-db-adapter-sequelize");
-			this.schema.adapter = new SqlAdapter(
-				"mariadb://" +
-					process.env.MARIA_USER +
-					":" +
-					process.env.MARIA_PWD +
-					"@" +
-					process.env.MARIA_URL +
-					"/" +
-					process.env.MARIA_DBNAME
-			);
-			this.schema.collection = this.collection;
-		} else if (process.env.NODE_ENV === "test") {
-			// NeDB memory adapter for testing
-			// @ts-ignore
-			this.schema.adapter = new DbService.MemoryAdapter();
-		} else {
-			// NeDB file DB adapter
-
-			// Create data folder
-			if (!existsSync("./data")) {
-				sync("./data");
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		const SqlAdapter = require("moleculer-db-adapter-sequelize");
+		this.schema.adapter = new SqlAdapter(
+			process.env.DB_NAME,
+			process.env.DB_USER,
+			process.env.DB_PWD,
+			{
+				host: process.env.DB_HOST,
+				dialect: process.env.DB_TYPE,
 			}
-			// @ts-ignore
-			this.schema.adapter = new DbService.MemoryAdapter({
-				filename: `./data/${this.collection}.db`,
-			});
-		}
+		);
+		this.schema.collection = this.collection;
 
 		return this.schema;
 	}
