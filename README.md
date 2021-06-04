@@ -39,3 +39,4 @@ In the terminal, try the following commands:
 - `npm run ci`: Run continuous test mode with watching
 - `npm test`: Run tests & generate coverage report
 # ex-moleculer-db-adapter-sequelize
+# ex-moleculer-db-adapter-sequelize
