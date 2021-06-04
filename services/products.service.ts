@@ -1,13 +1,13 @@
 /* eslint-disable prefer-arrow/prefer-arrow-functions */
 "use strict";
 import { Context, Service, ServiceBroker, ServiceSchema } from "moleculer";
+import DbService from "moleculer-db";
 import Sequelize from "sequelize";
 
-import DbConnection from "../mixins/db.mixin";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const SqlAdapter = require("moleculer-db-adapter-sequelize");
 
 export default class ProductsService extends Service {
-	private DbMixin = new DbConnection("products").start();
-
 	// @ts-ignore
 	public constructor(broker: ServiceBroker, schema: ServiceSchema<{}> = {}) {
 		super(broker);
@@ -15,7 +15,17 @@ export default class ProductsService extends Service {
 			Service.mergeSchemas(
 				{
 					name: "products",
-					mixins: [this.DbMixin],
+					mixins: [DbService],
+					adapter: new SqlAdapter(
+						process.env.DB_NAME,
+						process.env.DB_USER,
+						process.env.DB_PWD,
+						{
+							host: process.env.DB_HOST,
+							dialect: process.env.DB_TYPE,
+						}
+					),
+					collection: "products",
 					model: {
 						name: "products",
 						define: {
